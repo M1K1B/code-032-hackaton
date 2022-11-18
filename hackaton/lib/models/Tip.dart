@@ -1,0 +1,1 @@
+enum Tip { NUDI, TRAZI }
