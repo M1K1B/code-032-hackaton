@@ -1,8 +1,9 @@
-import './Kategorije.dart';
+import './Kategorija.dart';
+import './Tip.dart';
 
 class Objava {
   final String id;
-  final bool tip; // 0 = trazi, 1 = nudi 
+  final Tip tip;  
   final String naslov;
   final String tekst;
   final String slika;
