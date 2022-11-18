@@ -1,0 +1,1 @@
+enum Kategorija { UCENJE, SMESTAJ, PRODAJA, ZABAVA }
