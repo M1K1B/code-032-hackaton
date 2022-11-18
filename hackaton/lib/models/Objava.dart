@@ -2,7 +2,7 @@ import './Kategorije.dart';
 
 class Objava {
   final String id;
-  final bool tip; // 0 = trazi, 1 = nudi
+  final bool tip; // 0 = trazi, 1 = nudi 
   final String naslov;
   final String tekst;
   final String slika;
