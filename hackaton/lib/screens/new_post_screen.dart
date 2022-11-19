@@ -168,7 +168,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 children: [
                   Expanded(
                       child: SelectorButton(
-                          'Traži', Colors.blue, _changeTip, tip == Tip.TRAZI)),
+                          'Trazi', Colors.blue, _changeTip, tip == Tip.TRAZI)),
                   const SizedBox(
                     width: 8,
                   ),
@@ -190,7 +190,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                               padding: const EdgeInsets.only(right: 8),
                               child: SelectorButton(
                                 kategorije[index]['title'].toString(),
-                                Colors.blue,
+                                Color.fromARGB(255, 173, 66, 215),
                                 () {
                                   _changeKategorja(
                                     kategorije[index]['title']

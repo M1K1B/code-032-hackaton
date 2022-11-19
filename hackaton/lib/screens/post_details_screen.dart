@@ -3,6 +3,10 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hackaton/models/Korisnik.dart';
 import 'package:hackaton/models/Objava.dart';
+import 'package:hackaton/models/Tip.dart';
+import 'package:hackaton/screens/home_screen.dart';
+import 'package:hackaton/services/global_service.dart';
+import 'package:hackaton/services/posts_service.dart';
 import 'package:hackaton/services/user_service.dart';
 import 'package:hackaton/widgets/category_bubble.dart';
 
@@ -74,7 +78,30 @@ class PostDetailsScreen extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             color: Colors.grey[700]),
                       ),
-                      CategoryItem(objava.kategorija.name.toString())
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          if (objava.tip != Tip.REKLAMA)
+                            CategoryItem(objava.kategorija.name.toString()),
+                          if (NetworkService().auth.currentUser!.uid ==
+                              objava.kreatorId)
+                            IconButton(
+                                padding: EdgeInsets.only(left: 17),
+                                splashColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onPressed: () {
+                                  PostService().deleteObjava(objava.id).then(
+                                      (value) => Navigator.of(context)
+                                          .pushReplacementNamed(
+                                              HomeScreen.routeName));
+                                },
+                                icon: Icon(
+                                  Icons.delete,
+                                  size: 32,
+                                  color: Colors.red[800],
+                                ))
+                        ],
+                      )
                     ],
                   ),
                   SizedBox(
@@ -98,79 +125,84 @@ class PostDetailsScreen extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: kreator.slika != null
-                            ? NetworkImage(kreator.slika!)
-                            : const NetworkImage(
-                                "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"),
-                        radius: 35,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 22,
-                          ),
-                          Text(
-                            kreator.ime + " " + kreator.prezime,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 23),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  if (objava.tip != Tip.REKLAMA)
+                    Column(
                       children: [
-                        Icon(
-                          Icons.more_vert_sharp,
-                          color: Colors.grey[400],
-                        ),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.mail_rounded,
-                              color: Colors.blue[700],
+                            CircleAvatar(
+                              backgroundImage: kreator.slika != null
+                                  ? NetworkImage(kreator.slika!)
+                                  : const NetworkImage(
+                                      "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"),
+                              radius: 35,
                             ),
                             SizedBox(
                               width: 10,
                             ),
-                            Text(
-                              kreator.email,
-                              style: TextStyle(fontSize: 18),
-                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 22,
+                                ),
+                                Text(
+                                  kreator.ime + " " + kreator.prezime,
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ],
+                            )
                           ],
                         ),
-                        Icon(
-                          Icons.more_vert_sharp,
-                          color: Colors.grey[400],
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.phone,
-                              color: Colors.blue[700],
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              kreator.brTelefona,
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ],
-                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 23),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.more_vert_sharp,
+                                color: Colors.grey[400],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.mail_rounded,
+                                    color: Colors.blue[700],
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    kreator.email,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ],
+                              ),
+                              Icon(
+                                Icons.more_vert_sharp,
+                                color: Colors.grey[400],
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.phone,
+                                    color: Colors.blue[700],
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    kreator.brTelefona,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  )
                 ],
               ),
             );
