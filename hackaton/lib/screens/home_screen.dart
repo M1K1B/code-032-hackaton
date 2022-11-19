@@ -6,6 +6,7 @@ import 'package:hackaton/data/categories.dart';
 import 'package:hackaton/models/Kategorija.dart';
 import 'package:hackaton/models/Objava.dart';
 import 'package:hackaton/models/Tip.dart';
+import 'package:hackaton/services/user_service.dart';
 import 'package:hackaton/widgets/post_card.dart';
 
 import 'package:intl/intl.dart';
@@ -163,7 +164,13 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {},
           icon: Icon(Icons.person_rounded),
         ),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.add))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                UserService().logoutKorisnik();
+              },
+              icon: Icon(Icons.add))
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
