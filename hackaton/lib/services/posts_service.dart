@@ -13,30 +13,48 @@ class PostService extends NetworkService implements IObjava {
       Tip tip,
       String naslov,
       String tekst,
-      File slika,
+      File? slika,
       String datum,
       String kreatorId,
       Kategorija kategorija,
-      String univerzitet) 
-  async {
+      String univerzitet) async {
     try {
       final post = firestore.collection("objave").doc();
-      final ref = storage.ref().child('slike_objava').child(post.id + '.jpg');
-      await ref.putFile(slika).whenComplete(() => null);
-      final url = await ref.getDownloadURL();
-      await firestore.collection("objave").doc(post.id).set(
-        {
-          'id': post.id,
-          'tip': tip.index,
-          'naslov': naslov,
-          'tekst': tekst,
-          'slika': url,
-          'datum': datum,
-          'kreatorId': kreatorId,
-          'kategorija': kategorija.index,
-          'univerzitet': univerzitet,
-        },
-      );
+
+      if (slika != null) {
+        final ref = storage.ref().child('slike_objava').child(post.id + '.jpg');
+        await ref.putFile(slika).whenComplete(() => null);
+        final url = await ref.getDownloadURL();
+
+        await firestore.collection("objave").doc(post.id).set(
+          {
+            'id': post.id,
+            'tip': tip.index,
+            'naslov': naslov,
+            'tekst': tekst,
+            'slika': url,
+            'datum': datum,
+            'kreatorId': kreatorId,
+            'kategorija': kategorija.index,
+            'univerzitet': univerzitet,
+          },
+        );
+      } else {
+        await firestore.collection("objave").doc(post.id).set(
+          {
+            'id': post.id,
+            'tip': tip.index,
+            'naslov': naslov,
+            'tekst': tekst,
+            'slika':
+                'http://www.stazeibogaze.info/wp-content/uploads/2016/08/default-placeholder.png',
+            'datum': datum,
+            'kreatorId': kreatorId,
+            'kategorija': kategorija.index,
+            'univerzitet': univerzitet,
+          },
+        );
+      }
     } catch (e) {
       print(e);
       return false;
@@ -92,16 +110,16 @@ class PostService extends NetworkService implements IObjava {
 
     data.forEach((element) {
       objave.add(Objava(
-          id: element.data()['id'],
-          tip: Tip.values[element.data()['tip']],
-          naslov: element.data()['naslov'],
-          tekst: element.data()['tekst'],
-          slika: element.data()['slika'],
-          datum: element.data()['datum'],
-          kreatorId: element.data()['kreatorId'],
-          kategorija: Kategorija.values[element.data()['kategorija']],
-          univerzitet: element.data()['univerzitet'],
-          reklama: element.data()['reklama']));
+        id: element.data()['id'],
+        tip: Tip.values[element.data()['tip']],
+        naslov: element.data()['naslov'],
+        tekst: element.data()['tekst'],
+        slika: element.data()['slika'],
+        datum: element.data()['datum'].toString(),
+        kreatorId: element.data()['kreatorId'],
+        kategorija: Kategorija.values[element.data()['kategorija']],
+        univerzitet: element.data()['univerzitet'],
+      ));
     });
 
     return objave;

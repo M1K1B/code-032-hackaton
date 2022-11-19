@@ -20,12 +20,12 @@ class NewPostScreen extends StatefulWidget {
 }
 
 class _NewPostScreenState extends State<NewPostScreen> {
-  XFile? image;
+  File? image;
 
   final ImagePicker picker = ImagePicker();
 
   Future getImage(ImageSource media) async {
-    var img = await picker.pickImage(source: media);
+    var img = await picker.pickImage(source: media, maxWidth: 600);
     // check if image is grater than 1MB
     if (img != null) {
       File file = File(img.path);
@@ -37,7 +37,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
         );
       } else {
         setState(() {
-          image = img;
+          image = File(img.path);
         });
       }
     }
@@ -65,7 +65,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
         tip,
         naslov,
         tekst,
-        File(image!.path),
+        image,
         DateFormat("dd/MM/yyyy").format(DateTime.now()).toString(),
         user.id,
         kategorija,
@@ -135,11 +135,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
                       topRight: Radius.circular(20)),
                   child: image == null
                       ? Image.network(
-                          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png",
+                          "http://www.stazeibogaze.info/wp-content/uploads/2016/08/default-placeholder.png",
                           fit: BoxFit.cover,
                         )
                       : Image.file(
-                          File(image!.path),
+                          image!,
                           fit: BoxFit.cover,
                         ),
                 ),
@@ -179,7 +179,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
               ),
               SizedBox(
                 height: 52,
-                child: Expanded(
+                child: SizedBox(
+                  width: double.infinity,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: kategorije.length,

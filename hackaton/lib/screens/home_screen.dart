@@ -78,8 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return FutureBuilder(
       future: getLista(),
       builder: (context, snapshot) {
-        //objave = snapshot.data != null ? snapshot.data as List<Objava> : [];
-        objave = ((snapshot.data ?? []) as List<Objava>);
+        objave = (snapshot.data ?? []);
         return Scaffold(
           appBar: AppBar(
             title: SizedBox(

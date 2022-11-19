@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "715663220450",
+    "firebase_url": "https://bbcf-hemikalije.firebaseio.com",
+    "project_id": "bbcf-hemikalije",
+    "storage_bucket": "bbcf-hemikalije.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715663220450:android:f3104921e70f91758208bb",
+        "android_client_info": {
+          "package_name": "com.example.hackaton"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715663220450-pna0a4g53uccaoh9v8q38486u7blm3b7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLyqW_is435KZxCsnwREy_dqKs4OedjpQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715663220450-pna0a4g53uccaoh9v8q38486u7blm3b7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
