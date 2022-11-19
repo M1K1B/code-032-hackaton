@@ -51,6 +51,7 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multDexEnabled true
     }
 
     buildTypes {
@@ -68,4 +69,8 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation platform('com.google.firebase:firebase-bom:31.1.0')
 }
+
+id 'com.google.gms.google-services'
+// apply plugin: 'com...'
