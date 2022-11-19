@@ -29,6 +29,8 @@ class Objava implements IObjava {
   @override
   bool addObjava(String id, Tip tip, String naslov, String tekst, File slika, DateTime datum, String kreatorId, Kategorija kategorija, String univerzitet) {
     // TODO: implement addObjava
+   
+
     throw UnimplementedError();
   }
 
