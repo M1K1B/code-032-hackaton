@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton/screens/home_screen.dart';
+import 'package:hackaton/screens/my_profile_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -140,7 +141,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (_) =>
-                                              const RegisterScreen()));
+                                              MyProfileScreen()));
                                 },
                                 style: ButtonStyle(
                                     shape: MaterialStateProperty.all<
