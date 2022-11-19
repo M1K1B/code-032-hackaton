@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton/screens/home_screen.dart';
 import 'package:hackaton/screens/login_screen.dart';
+import 'package:hackaton/screens/my_profile_screen.dart';
 import 'package:hackaton/screens/new_post_screen.dart';
 import 'package:hackaton/screens/post_details_screen.dart';
 import 'package:hackaton/screens/register_screen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hackaton/services/global_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
+          stream: NetworkService().auth.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData)
               return HomeScreen();
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
           LoginScreen.routeName: (context) => const LoginScreen(),
           RegisterScreen.routeName: (context) => const RegisterScreen(),
           NewPostScreen.routeName: (context) => const NewPostScreen(),
+          MyProfileScreen.routeName: (context) => const MyProfileScreen(),
         });
   }
 }

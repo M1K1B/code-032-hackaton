@@ -6,6 +6,7 @@ import 'package:hackaton/data/categories.dart';
 import 'package:hackaton/models/Kategorija.dart';
 import 'package:hackaton/models/Objava.dart';
 import 'package:hackaton/models/Tip.dart';
+import 'package:hackaton/screens/my_profile_screen.dart';
 
 import 'package:hackaton/screens/new_post_screen.dart';
 import 'package:hackaton/services/user_service.dart';
@@ -59,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Objava(
       id: 'asdasd',
       tip: Tip.NUDI,
-      naslov: '1',
+      naslov: 'da',
       tekst: 'dassda',
       slika:
           'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png',
@@ -83,22 +84,23 @@ class _HomeScreenState extends State<HomeScreen> {
     Objava(
       id: 'asdasd',
       tip: Tip.TRAZI,
-      naslov: '3',
-      tekst: 'dassda',
+      naslov: 'Casovi matematike',
+      tekst: 'Treb mi pomoc oko Analize 1, funkcija, integrala, itd.',
       slika:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png',
+          'https://connect-assets.prosple.com/cdn/ff/_Y2JMj06AZeNzNBX8EBCSJg4_A71dSbBAXXPqCplgFw/1567731370/public/2019-09/feature-article-tips-for-being-a-mathematics-student-at-university-838x484-2019.jpg',
       datum: DateFormat("dd/MM/yyyy").format(DateTime.now()),
       kreatorId: 'adsadsad',
-      kategorija: Kategorija.SMESTAJ,
+      kategorija: Kategorija.UCENJE,
       univerzitet: 'Novi Sad',
     ),
     Objava(
       id: 'asdasd',
       tip: Tip.TRAZI,
-      naslov: '4',
-      tekst: 'dassda',
+      naslov: 'Treba mi cimer',
+      tekst:
+          'Nisam upao u dom ove godine i trazim cimera da delimo stan, pozeljno bi bilo ako taj cimer vec ima stan u koji mogu samo da se uselim.',
       slika:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png',
+          'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1403414884l/20518986.jpg',
       datum: DateFormat("dd/MM/yyyy").format(DateTime.now()),
       kreatorId: 'adsadsad',
       kategorija: Kategorija.SMESTAJ,
@@ -119,13 +121,14 @@ class _HomeScreenState extends State<HomeScreen> {
     Objava(
       id: 'asdasd',
       tip: Tip.TRAZI,
-      naslov: '6',
-      tekst: 'dassda',
+      naslov: 'Igraci za 3x3',
+      tekst:
+          'Trazimo jos 2 igraca za igranje basketa 3x3 na djackom terenu svake nedelje. Potrebno je da samo budete izmedju 16 i 25 godina i da volite sport.',
       slika:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png',
+          'https://media.istockphoto.com/id/1058718840/photo/young-man-jumping-and-making-a-fantastic-slam-dunk.jpg?s=612x612&w=0&k=20&c=klUP4I6L5bqlTukSuE_Zfmdac_nQngpZlgCRALJm198=',
       datum: DateFormat("dd/MM/yyyy").format(DateTime.now()),
       kreatorId: 'adsadsad',
-      kategorija: Kategorija.SMESTAJ,
+      kategorija: Kategorija.ZABAVA,
       univerzitet: 'Novi Sad',
     ),
     Objava(
@@ -161,17 +164,21 @@ class _HomeScreenState extends State<HomeScreen> {
         title: SizedBox(
           width: 70,
           child: Image.asset('assets/logo.png'),
-          
         ),
         centerTitle: true,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(MyProfileScreen.routeName);
+          },
           icon: Icon(Icons.person_rounded),
         ),
-        actions: [IconButton(onPressed: () {
-          Navigator.pushNamed(context, NewPostScreen.routeName);
-          
-        }, icon: Icon(Icons.add))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, NewPostScreen.routeName);
+              },
+              icon: Icon(Icons.add))
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
@@ -248,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         (objave[index].naslov.contains(searchQuery) ||
                             objave[index].tekst.contains(searchQuery)))
                       return Container(
-                        margin: EdgeInsets.only(top: 10),
+                        margin: EdgeInsets.only(top: 20),
                         child: PostCard(objave[index]),
                       );
                     else

@@ -15,22 +15,17 @@ class UserService extends NetworkService implements IKorisnik {
       File? slika,
       String univerzitet,
       String brTelefona) async {
-    print('6');
     final authResult = await auth.createUserWithEmailAndPassword(
         email: email, password: lozinka);
-
-    print('7');
     if (slika != null) {
       try {
         final ref = storage
             .ref()
             .child('korisnicke_slike')
             .child(authResult.user!.uid + '.jpg');
-        print('1');
 
         await ref.putFile(slika).whenComplete(() => null);
         final url = await ref.getDownloadURL();
-        print('2');
         await firestore.collection("korisnici").doc(authResult.user!.uid).set(
           {
             'ime': ime,
@@ -41,14 +36,12 @@ class UserService extends NetworkService implements IKorisnik {
             'brTelefona': brTelefona
           },
         );
-        print('3');
       } catch (e) {
         print(e);
         return false;
       }
     } else {
       try {
-        print('4');
         await firestore.collection("korisnici").doc(authResult.user!.uid).set(
           {
             'ime': ime,
@@ -59,7 +52,6 @@ class UserService extends NetworkService implements IKorisnik {
             'brTelefona': brTelefona
           },
         );
-        print('5');
       } catch (e) {
         print(e);
         return false;
@@ -84,7 +76,7 @@ class UserService extends NetworkService implements IKorisnik {
         ime: data['ime'],
         prezime: data['prezime'],
         brTelefona: data['brTelefona'],
-        slika: data['slika'],
+        slika: data['slika'] ?? "",
         univerzitet: data['univerzitet']);
 
     return fetchedUser;

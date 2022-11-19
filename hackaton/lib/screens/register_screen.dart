@@ -22,7 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     'Univerzitet u Čačku'
   ];
 
-  XFile? image;
+  File? image;
 
   final ImagePicker picker = ImagePicker();
 
@@ -30,56 +30,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     var img = await picker.pickImage(source: media);
 
     setState(() {
-      image = img;
+      image = File(img!.path);
     });
   }
 
-  void myAlert() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: Text('Izaberite izvor slike'),
-            content: Container(
-              height: MediaQuery.of(context).size.height / 6,
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    //if user click this button, user can upload image from gallery
-                    onPressed: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.gallery);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.image),
-                        Text('Galerija'),
-                      ],
-                    ),
-                  ),
-                  ElevatedButton(
-                    //if user click this button. user can upload image from camera
-                    onPressed: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.camera);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.camera),
-                        Text('Kamera'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
-  void _register(String name, surname, email, password, university, phone) {
+  void _register(
+      String name, surname, email, password, university, phone, File? image) {
     if (name.isEmpty ||
         surname.isEmpty ||
         email.isEmpty ||
@@ -89,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
     UserService()
-        .addKorisnik(name, surname, email, password, null, university, phone);
+        .addKorisnik(name, surname, email, password, image, university, phone);
   }
 
   // Controlers
@@ -103,196 +59,274 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
-      body: SizedBox(
-        width: double.infinity,
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                    child: Column(
-                      children: [
-                        const Text(
-                          'Registracija',
-                          style: TextStyle(
-                            fontSize: 50,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                          ),
+      body: Stack(children: [
+        SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Image.asset(
+            'bg.jpeg',
+            fit: BoxFit.cover,
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: Alignment.topRight,
+              colors: [
+                Colors.blue[700]!.withOpacity(0.9),
+                Colors.blue[400]!.withOpacity(0.9)
+              ],
+            ),
+          ),
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        CircleAvatar(
-                          radius: 60,
-                          backgroundColor: Colors.blue,
-                          child: ClipOval(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        child: Column(
+                          children: [
+                            Stack(
+                              alignment: Alignment.bottomRight,
                               children: [
-                                SizedBox(
-                                  width: 80,
-                                  height: 80,
-                                  child: (image != null)
-                                      ? Image.file(
-                                          File(image!.path),
-                                          fit: BoxFit.fill,
-                                        )
-                                      : Image.asset(
-                                          'assets/images/default_user.png',
-                                          fit: BoxFit.fill,
-                                        ),
+                                CircleAvatar(
+                                  radius: 60,
+                                  backgroundColor: Colors.blue,
+                                  child: ClipOval(
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      child: (image != null)
+                                          ? Image.file(
+                                              File(image!.path),
+                                              fit: BoxFit.fill,
+                                            )
+                                          : Image.asset(
+                                              'assets/images/default_user.png',
+                                              fit: BoxFit.fill,
+                                            ),
+                                    ),
+                                  ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 0, top: 5),
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      color: Colors.grey[100]),
                                   child: IconButton(
                                     icon: const Icon(
-                                      Icons.camera_alt,
-                                      size: 30,
+                                      Icons.add,
+                                      size: 25,
                                     ),
                                     onPressed: () {
-                                      myAlert();
+                                      getImage(ImageSource.gallery);
                                     },
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              right: 15, left: 15, top: 16),
-                          child: TextField(
-                            controller: _nameController,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Ime',
-                                hintText: 'Unesite vaše ime'),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15.0, right: 15.0, top: 8, bottom: 0),
-                          child: TextField(
-                            controller: _surnameController,
-                            obscureText: false,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Prezime',
-                                hintText: 'Unesite vaše prezime'),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15.0, right: 15.0, top: 8, bottom: 0),
-                          child: DropdownButtonFormField(
-                              borderRadius: BorderRadius.circular(32),
-                              style: const TextStyle(
-                                color: Colors.black,
-                              ),
-                              icon: const Icon(Icons.arrow_drop_down),
-                              value: dropdownValue,
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  alignment: Alignment.center,
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownValue = newValue!;
-                                });
-                              }),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15.0, right: 15.0, top: 8, bottom: 0),
-                          child: TextField(
-                            controller: _emailController,
-                            obscureText: false,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Email',
-                                hintText: 'Unesite vaš email'),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15.0, right: 15.0, top: 8, bottom: 0),
-                          child: TextField(
-                            controller: _passController,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Lozinka',
-                                hintText: 'Unesite vašu lozinku'),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 15.0, right: 15.0, top: 8, bottom: 0),
-                          child: TextField(
-                            controller: _phoneController,
-                            keyboardType: TextInputType.phone,
-                            obscureText: false,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Telefon',
-                                hintText: 'Unesite vaš broj telefona'),
-                          ),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  _register(
-                                      _nameController.text,
-                                      _surnameController.text,
-                                      _emailController.text,
-                                      _passController.text,
-                                      dropdownValue,
-                                      _phoneController.text);
-                                },
-                                style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(18.0),
-                                            side: const BorderSide(
-                                                color: Colors.white)))),
-                                child: const Text(
-                                  'Registruj se',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 25),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 20, left: 20, top: 30),
+                              child: SizedBox(
+                                height: 50,
+                                child: TextField(
+                                  controller: _nameController,
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15))),
+                                      labelText: 'Ime',
+                                      hintText: 'Unesite vaše ime'),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 20, left: 20, top: 10),
+                              child: SizedBox(
+                                height: 50,
+                                child: TextField(
+                                  controller: _surnameController,
+                                  obscureText: false,
+                                  decoration: const InputDecoration(
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15))),
+                                      labelText: 'Prezime',
+                                      hintText: 'Unesite vaše prezime'),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 20, left: 20, top: 10),
+                              child: SizedBox(
+                                height: 55,
+                                child: DropdownButtonFormField(
+                                    elevation: 0,
+                                    borderRadius: BorderRadius.circular(15),
+                                    style: TextStyle(
+                                        color: Colors.grey[700], fontSize: 16),
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
+                                    ),
+                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                    value: dropdownValue,
+                                    items: items.map((String items) {
+                                      return DropdownMenuItem(
+                                        alignment: Alignment.centerLeft,
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        dropdownValue = newValue!;
+                                      });
+                                    }),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 20, left: 20, top: 10),
+                              child: SizedBox(
+                                height: 50,
+                                child: TextField(
+                                  controller: _emailController,
+                                  obscureText: false,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: const InputDecoration(
+                                      prefixIcon: Icon(Icons.alternate_email),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15))),
+                                      labelText: 'Email',
+                                      hintText: 'Unesite vaš email'),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 20, left: 20, top: 10),
+                              child: SizedBox(
+                                height: 50,
+                                child: TextField(
+                                  controller: _passController,
+                                  obscureText: true,
+                                  decoration: const InputDecoration(
+                                      prefixIcon: Icon(Icons.lock),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15))),
+                                      labelText: 'Lozinka',
+                                      hintText: 'Unesite vašu lozinku'),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 20, left: 20, top: 10),
+                              child: SizedBox(
+                                height: 50,
+                                child: TextField(
+                                  controller: _phoneController,
+                                  keyboardType: TextInputType.phone,
+                                  obscureText: false,
+                                  decoration: const InputDecoration(
+                                      prefixIcon: Icon(Icons.phone),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(15))),
+                                      labelText: 'Telefon',
+                                      hintText: 'Unesite vaš broj telefona'),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              padding:
+                                  const EdgeInsets.only(top: 25, bottom: 15),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      _register(
+                                          _nameController.text,
+                                          _surnameController.text,
+                                          _emailController.text,
+                                          _passController.text,
+                                          dropdownValue,
+                                          _phoneController.text,
+                                          image);
+                                    },
+                                    style: ButtonStyle(
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.symmetric(
+                                              horizontal: 30, vertical: 15)),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                          side: const BorderSide(
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Registrujte se',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context)
+                                            .pushReplacementNamed(
+                                                '/login-page');
+                                      },
+                                      child: Text(
+                                        "Imate nalog? Prijavite se",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ]),
     );
   }
 }

@@ -27,54 +27,9 @@ class _NewPostScreenState extends State<NewPostScreen> {
     });
   }
 
-  void myAlert() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            title: Text('Izaberite izvor slike'),
-            content: Container(
-              height: MediaQuery.of(context).size.height / 6,
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    //if user click this button, user can upload image from gallery
-                    onPressed: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.gallery);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.image),
-                        Text('Galerija'),
-                      ],
-                    ),
-                  ),
-                  ElevatedButton(
-                    //if user click this button. user can upload image from camera
-                    onPressed: () {
-                      Navigator.pop(context);
-                      getImage(ImageSource.camera);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.camera),
-                        Text('Kamera'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
   Tip tip = Tip.TRAZI;
 
-  Kategorija kategorija = Kategorija.ALL;
+  Kategorija kategorija = Kategorija.UCENJE;
   final kategorije = CATEGORIES;
 
   // controllers
@@ -82,18 +37,15 @@ class _NewPostScreenState extends State<NewPostScreen> {
   final _tekstController = TextEditingController();
 
   void _newPost(String naslov, tekst, tip, kategorija) {
-    if(
-      naslov.isEmpty ||
-      tekst.isEmpty ||
-      tip == null ||
-      kategorija == null
-    ) {
+    if (naslov.isEmpty || tekst.isEmpty || tip == null || kategorija == null) {
       return;
     }
-    print("$naslov - naslov\n$tekst - tekst\n$tip - tip\n$kategorija - kategorija");
+    print(
+        "$naslov - naslov\n$tekst - tekst\n$tip - tip\n$kategorija - kategorija");
     Navigator.push(
         context, MaterialPageRoute(builder: (_) => const HomeScreen()));
   }
+
   void _changeTip() {
     setState(() {
       tip = tip == Tip.TRAZI ? Tip.NUDI : Tip.TRAZI;
@@ -126,127 +78,168 @@ class _NewPostScreenState extends State<NewPostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text('Novi post'),
-            ],
-          ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Text('Kreirajte novu objavu'),
+          ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8),
+        actions: [
+          SizedBox(
+            width: 40,
+          )
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              SizedBox(
+                height: 280,
+                width: double.infinity,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20)),
+                  child: image == null
+                      ? Image.network(
+                          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png",
+                          fit: BoxFit.cover,
+                        )
+                      : Image.file(
+                          File(image!.path),
+                          fit: BoxFit.cover,
+                        ),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20))),
+                child: TextButton.icon(
+                    style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all(Colors.white)),
+                    icon: Icon(Icons.camera_alt),
+                    onPressed: () {
+                      getImage(ImageSource.gallery);
+                    },
+                    label: const Text('Dodajte sliku')),
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 children: [
                   Expanded(
                       child: SelectorButton(
-                          'Trazi', Colors.blue, _changeTip, tip == Tip.TRAZI)),
+                          'Traži', Colors.blue, _changeTip, tip == Tip.TRAZI)),
                   const SizedBox(
-                    width: 4,
+                    width: 8,
                   ),
                   Expanded(
                       child: SelectorButton(
                           'Nudi', Colors.blue, _changeTip, tip == Tip.NUDI)),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: _naslovController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Naslov',
-                  ),
-                ),
-              ),
-              Container(
-                  height: MediaQuery.of(context).size.height * 0.12,
-                  child: Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blue),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: image == null ? Image.network(
-                            "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png")
-                            :
-                            Image.file(File(image!.path)), 
-                      ),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Dodaj sliku'),
-                            const Text('Maksimalna velicina 5MB'),
-                            ElevatedButton(
-                                onPressed: () {
-                                  myAlert();
-                                },
-                                child: const Text('Dodaj'))
-                          ],
-                        ),
-                      ),
-                    ],
-                  )),
               SizedBox(
-                height: 55,
+                height: 52,
                 child: Expanded(
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: kategorije.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        padding: const EdgeInsets.all(4.0),
-                        child: SelectorButton(
-                            kategorije[index]['title'].toString(), Colors.blue,
-                            () {
-                          _changeKategorja(kategorije[index]['title']
-                              .toString()
-                              .toUpperCase());
-                        },
-                            kategorija.name ==
-                                kategorije[index]['title']
-                                    .toString()
-                                    .toUpperCase()),
-                      );
+                      return kategorije[index]['title'] != 'All'
+                          ? Container(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: SelectorButton(
+                                kategorije[index]['title'].toString(),
+                                Colors.blue,
+                                () {
+                                  _changeKategorja(
+                                    kategorije[index]['title']
+                                        .toString()
+                                        .toUpperCase(),
+                                  );
+                                },
+                                kategorija.name ==
+                                    kategorije[index]['title']
+                                        .toString()
+                                        .toUpperCase(),
+                              ),
+                            )
+                          : SizedBox(width: 0);
                     },
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 55,
                 child: TextField(
+                  controller: _naslovController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    labelText: 'Naslov',
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: 150,
+                child: TextField(
+                  maxLines: 6,
+                  maxLength: 200,
                   controller: _tekstController,
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+                    alignLabelWithHint: true,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
                     labelText: 'Opis',
                   ),
                 ),
               ),
-              const Divider(color: Colors.black),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    _newPost(
-                        _naslovController.text,
-                        _tekstController.text,
-                        tip,
+                    _newPost(_naslovController.text, _tekstController.text, tip,
                         kategorija);
-                      },
-                  child: const Text('Postavi oglas'),
+                  },
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                        EdgeInsets.symmetric(horizontal: 30, vertical: 15)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        side: const BorderSide(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  child: const Text(
+                    'Kreirajte novu objavu',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
                 ),
-              )
+              ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
-  
 }
