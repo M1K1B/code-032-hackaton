@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hackaton/screens/home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
+  static const String routeName = '/register-page';
+
   const RegisterScreen({super.key});
 
   @override
@@ -73,9 +75,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               borderRadius: BorderRadius.circular(32),
                               style: const TextStyle(
                                 color: Colors.black,
-
                               ),
-                              icon: const  Icon(Icons.arrow_drop_down),
+                              icon: const Icon(Icons.arrow_drop_down),
                               value: dropdownValue,
                               items: items.map((String items) {
                                 return DropdownMenuItem(
@@ -107,7 +108,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               left: 15.0, right: 15.0, top: 8, bottom: 0),
                           child: TextField(
                             obscureText: true,
-
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Lozinka',
@@ -136,11 +136,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              const RegisterScreen()));
+                                  Navigator.of(context)
+                                      .pushNamed(RegisterScreen.routeName);
                                 },
                                 style: ButtonStyle(
                                     shape: MaterialStateProperty.all<

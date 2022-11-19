@@ -3,6 +3,8 @@ import 'package:hackaton/screens/home_screen.dart';
 import 'package:hackaton/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const String routeName = '/login-page';
+
   const LoginScreen({super.key});
 
   @override
@@ -22,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -34,7 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         const Text(
                           'Prijava',
-                        
                           style: TextStyle(
                             fontSize: 50,
                             fontWeight: FontWeight.bold,
@@ -42,7 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         const Padding(
-                          padding: EdgeInsets.only(right: 15, left: 15, top: 16),
+                          padding:
+                              EdgeInsets.only(right: 15, left: 15, top: 16),
                           child: TextField(
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
@@ -71,20 +72,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              const RegisterScreen()));
+                                  Navigator.of(context)
+                                      .pushNamed(RegisterScreen.routeName);
                                 },
                                 style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: const BorderSide(color: Colors.white)
-                                    )
-                                  )
-                                ),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: const BorderSide(
+                                                color: Colors.white)))),
                                 child: const Text(
                                   'Registruj se',
                                   style: TextStyle(
