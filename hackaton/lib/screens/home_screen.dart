@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   decoration: BoxDecoration(
                       border: Border.all(width: 1, color: Colors.grey[600]!),
-                      borderRadius: BorderRadius.circular(20)),
+                      borderRadius: BorderRadius.circular(12)),
                   child: TextFormField(
                     onFieldSubmitted: (newValue) {
                       setState(() {
@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           margin: const EdgeInsets.only(right: 10),
                           child: SelectorButton(
                             kategorije[index]['title'].toString(),
-                            Colors.blue,
+                            Color.fromARGB(255, 173, 66, 215),
                             () {
                               _changeKategorja(kategorije[index]['title']
                                   .toString()
@@ -180,17 +180,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: ListView.builder(
                       itemCount: objave.length,
                       itemBuilder: (context, index) {
-                        if (objave[index].tip == tip &&
-                            (objave[index].kategorija == kategorija ||
-                                kategorija == Kategorija.ALL) &&
-                            (objave[index]
-                                    .naslov
-                                    .toLowerCase()
-                                    .contains(searchQuery) ||
-                                objave[index]
-                                    .tekst
-                                    .toLowerCase()
-                                    .contains(searchQuery)))
+                        if (objave[index].tip == Tip.REKLAMA ||
+                            (objave[index].tip == tip &&
+                                (objave[index].kategorija == kategorija ||
+                                    kategorija == Kategorija.ALL) &&
+                                (objave[index]
+                                        .naslov
+                                        .toLowerCase()
+                                        .contains(searchQuery) ||
+                                    objave[index]
+                                        .tekst
+                                        .toLowerCase()
+                                        .contains(searchQuery))))
                           return Container(
                             margin: EdgeInsets.only(top: 20),
                             child: PostCard(objave[index]),
@@ -230,7 +231,8 @@ class SelectorButton extends StatelessWidget {
           color: isOn ? color : color.withOpacity(0.4),
           border: Border.all(
               color: isOn ? color : color.withOpacity(0.4), width: 1),
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(
+              (text == "Trazi" || text == "Nudi") ? 10 : 50),
         ),
         child: Text(
           text,

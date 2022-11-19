@@ -16,5 +16,5 @@ abstract class IObjava {
     Kategorija kategorija,
     String univerzitet,
   );
-  bool deleteObjava(String id);
+  Future<bool> deleteObjava(String id);
 }

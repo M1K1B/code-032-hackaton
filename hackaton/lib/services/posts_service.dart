@@ -63,7 +63,7 @@ class PostService extends NetworkService implements IObjava {
   }
 
   @override
-  bool deleteObjava(String id) {
+  Future<bool> deleteObjava(String id) async {
     final data = firestore.collection("objave").doc(id);
     try {
       data.delete();
@@ -120,33 +120,6 @@ class PostService extends NetworkService implements IObjava {
         kategorija: Kategorija.values[element.data()['kategorija']],
         univerzitet: element.data()['univerzitet'],
       ));
-    });
-
-    return objave;
-  }
-
-  // get all posts that are reklama
-  Future<List<Objava>> getReklame() async {
-    List<Objava> objave = [];
-
-    final data = await firestore
-        .collection("objave")
-        .where("reklama", isEqualTo: true)
-        .get()
-        .then((value) => value.docs);
-
-    data.forEach((element) {
-      objave.add(Objava(
-          id: element.data()['id'],
-          tip: Tip.values[element.data()['tip']],
-          naslov: element.data()['naslov'],
-          tekst: element.data()['tekst'],
-          slika: element.data()['slika'],
-          datum: element.data()['datum'].toDate(),
-          kreatorId: element.data()['kreatorId'],
-          kategorija: Kategorija.values[element.data()['kategorija']],
-          univerzitet: element.data()['univerzitet'],
-          reklama: element.data()['reklama']));
     });
 
     return objave;
