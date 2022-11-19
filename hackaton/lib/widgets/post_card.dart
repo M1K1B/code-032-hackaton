@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:hackaton/screens/post_details_screen.dart';
 import '../models/Objava.dart';
 import './category_bubble.dart';
 import 'package:hackaton/models/Kategorija.dart';
@@ -79,7 +80,10 @@ class PostCard extends StatelessWidget {
                       width: double.infinity,
                     )),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PostDetailsScreen(card)));
+                      },
                       child: Text('Detaljnije'),
                       style: ButtonStyle(
                           backgroundColor:
