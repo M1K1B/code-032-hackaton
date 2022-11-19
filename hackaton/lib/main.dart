@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: StreamBuilder(
-          stream: NetworkService().auth.authStateChanges(),
+          stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData)
               return HomeScreen();
@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
           RegisterScreen.routeName: (context) => const RegisterScreen(),
           NewPostScreen.routeName: (context) => const NewPostScreen(),
           MyProfileScreen.routeName: (context) => const MyProfileScreen(),
+          HomeScreen.routeName: (context) => const HomeScreen(),
         });
   }
 }

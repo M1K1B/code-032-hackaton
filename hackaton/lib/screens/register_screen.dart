@@ -275,23 +275,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
-                                      if(_checkFields(
+                                      if (_checkFields(
                                           _nameController.text,
                                           _surnameController.text,
                                           _emailController.text,
                                           _passController.text,
                                           dropdownValue,
-                                          _phoneController.text
-                                          )){
-                                            _register(
-                                                _nameController.text,
-                                                _surnameController.text,
-                                                _emailController.text,
-                                                _passController.text,
-                                                dropdownValue,
-                                                _phoneController.text,
-                                                image);
-                                          }
+                                          _phoneController.text)) {
+                                        _register(
+                                            _nameController.text,
+                                            _surnameController.text,
+                                            _emailController.text,
+                                            _passController.text,
+                                            dropdownValue,
+                                            _phoneController.text,
+                                            image);
+                                      }
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all(
@@ -345,9 +344,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ]),
     );
   }
-  
-  bool _checkFields(String name, String surname, String email, String pass, String uni, String phone) {
-    if (name.isEmpty || surname.isEmpty || email.isEmpty || pass.isEmpty || uni.isEmpty || phone.isEmpty) {
+
+  bool _checkFields(String name, String surname, String email, String pass,
+      String uni, String phone) {
+    if (name.isEmpty ||
+        surname.isEmpty ||
+        email.isEmpty ||
+        pass.isEmpty ||
+        uni.isEmpty ||
+        phone.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Morate popuniti sva polja'),
@@ -414,11 +419,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return false;
       }
     });
-
-
-
-
     return true;
-
   }
 }
