@@ -209,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: kategorije.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      margin: const EdgeInsets.only(right: 15),
+                      margin: const EdgeInsets.only(right: 10),
                       child: SelectorButton(
                         kategorije[index]['title'].toString(),
                         Colors.blue,
