@@ -14,95 +14,103 @@ class PostCard extends StatelessWidget {
 
   PostCard(this.card, {super.key});
 
-  // Objava (id, tip, naslov, tekst, slika, datum, kreatorId, kategorija, univerzitet)
-
   @override
   Widget build(BuildContext context) {
     final cardWidth = MediaQuery.of(context).size.width - 22;
 
-    return Container(
-      width: double.infinity,
-      height: 160,
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[600]!, width: 1),
-          borderRadius: BorderRadius.circular(20)),
-      child: Row(
-        children: [
-          SizedBox(
-            height: double.infinity,
-            width: cardWidth / 3,
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  bottomLeft: Radius.circular(20)),
-              child: Image.network(
-                card.slika.toString(),
-                fit: BoxFit.cover,
-              ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => PostDetailsScreen(card)));
+      },
+      child: Stack(children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: SizedBox(
+            width: double.infinity,
+            height: 140,
+            child: Image.asset(
+              'bg.jpeg',
+              fit: BoxFit.cover,
             ),
           ),
-          Container(
-            width: cardWidth / 3 * 2,
-            padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  card.naslov.toString(),
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+        ),
+        Container(
+          width: double.infinity,
+          height: 140,
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: Offset(0, 1), // changes position of shadow
                 ),
-                Row(
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ],
+              color: Colors.white.withOpacity(0.93),
+              border: Border.all(color: Colors.grey[400]!, width: 1),
+              borderRadius: BorderRadius.circular(20)),
+          child: Row(
+            children: [
+              SizedBox(
+                height: double.infinity,
+                width: cardWidth / 3,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      bottomLeft: Radius.circular(20)),
+                  child: Image.network(
+                    card.slika.toString(),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Container(
+                width: cardWidth / 3 * 2,
+                padding: EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      card.datum.toString(),
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey[600]),
+                      card.naslov.toString(),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
                     ),
                     SizedBox(
-                      width: 10,
+                      height: 10,
                     ),
-                    CategoryItem(card.kategorija.name),
-                  ],
-                ),
-                Text(
-                  card.tekst.toString(),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: SizedBox(
-                      width: double.infinity,
-                    )),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PostDetailsScreen(card)));
-                      },
-                      child: Text('Detaljnije'),
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll<Color>(Colors.blue),
-                          foregroundColor:
-                              MaterialStatePropertyAll<Color>(Colors.white),
-                          padding: MaterialStateProperty.all<EdgeInsets>(
-                              EdgeInsets.symmetric(horizontal: 20))),
+                    Row(
+                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          card.datum.toString(),
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[600]),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        CategoryItem(card.kategorija.name),
+                      ],
                     ),
                     SizedBox(
-                      width: 6,
-                    )
+                      height: 10,
+                    ),
+                    Text(
+                      card.tekst.toString(),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ],
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ]),
     );
   }
 }

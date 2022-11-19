@@ -43,7 +43,6 @@ class UserService extends NetworkService implements IKorisnik {
       }
     } else {
       try {
-        print('4');
         await firestore.collection("korisnici").doc(authResult.user!.uid).set(
           {
             'ime': ime,
@@ -54,7 +53,6 @@ class UserService extends NetworkService implements IKorisnik {
             'brTelefona': brTelefona
           },
         );
-        print('5');
       } catch (e) {
         print(e);
         return false;
@@ -79,7 +77,7 @@ class UserService extends NetworkService implements IKorisnik {
         ime: data['ime'],
         prezime: data['prezime'],
         brTelefona: data['brTelefona'],
-        slika: data['slika'],
+        slika: data['slika'] ?? "",
         univerzitet: data['univerzitet']);
 
     return fetchedUser;
