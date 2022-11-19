@@ -15,6 +15,8 @@ import 'package:hackaton/widgets/post_card.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const String routeName = '/home-screen';
+
   const HomeScreen({super.key});
 
   @override

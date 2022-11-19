@@ -32,7 +32,13 @@ class PostDetailsScreen extends StatelessWidget {
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: <Color>[Colors.black, Colors.transparent]),
+                colors: <Color>[
+                  Color.fromRGBO(0, 0, 0, 0.9),
+                  Color.fromRGBO(0, 0, 0, 0.7),
+                  Color.fromRGBO(0, 0, 0, 0.5),
+                  Color.fromRGBO(0, 0, 0, 0.3),
+                  Color.fromRGBO(0, 0, 0, 0.0),
+                ]),
           ),
         ),
         title: Text(
@@ -50,7 +56,7 @@ class PostDetailsScreen extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -92,7 +98,10 @@ class PostDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    backgroundImage: kreator.slika != null ?  NetworkImage(kreator.slika !) : const NetworkImage("https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"),
+                    backgroundImage: kreator.slika != null
+                        ? NetworkImage(kreator.slika!)
+                        : const NetworkImage(
+                            "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"),
                     radius: 35,
                   ),
                   SizedBox(
@@ -108,45 +117,55 @@ class PostDetailsScreen extends StatelessWidget {
                         kreator.ime + " " + kreator.prezime,
                         style: TextStyle(fontSize: 20),
                       ),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.mail_rounded,
-                            color: Colors.blue[700],
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            kreator.email,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.phone,
-                            color: Colors.blue[700],
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            kreator.brTelefona,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      ),
                     ],
                   )
                 ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 23),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.more_vert_sharp,
+                      color: Colors.grey[400],
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.mail_rounded,
+                          color: Colors.blue[700],
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          kreator.email,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                    Icon(
+                      Icons.more_vert_sharp,
+                      color: Colors.grey[400],
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.phone,
+                          color: Colors.blue[700],
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          kreator.brTelefona,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               )
             ],
           ),
