@@ -2,7 +2,7 @@ class Korisnik {
   final String id;
   final String ime, prezime;
   final String email;
-  final String slika;
+  final String? slika;
   final String univerzitet;
   final String brTelefona;
 
