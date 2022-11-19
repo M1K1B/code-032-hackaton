@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton/screens/home_screen.dart';
 import 'package:hackaton/screens/my_profile_screen.dart';
+import 'package:hackaton/services/global_service.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:hackaton/services/user_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = '/register-page';
@@ -35,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _register(
-      String name, surname, email, password, university, phone, File? image) {
+      String name, surname, email, password, university, phone, File? image) async {
     if (name.isEmpty ||
         surname.isEmpty ||
         email.isEmpty ||
@@ -44,8 +46,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         phone.isEmpty) {
       return;
     }
-    UserService()
-        .addKorisnik(name, surname, email, password, image, university, phone);
+    
+    final isFine = await UserService().addKorisnik(name, surname, email, password, image, university, phone);
+    if (isFine) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+    }
+
   }
 
   // Controlers
@@ -391,6 +398,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
       return false;
     }
+
+    // check if email exists in database
+    NetworkService().firestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Email već postoji'),
+          ),
+        );
+        return false;
+      }
+    });
+
+
 
 
     return true;

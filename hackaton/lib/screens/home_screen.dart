@@ -6,9 +6,11 @@ import 'package:hackaton/data/categories.dart';
 import 'package:hackaton/models/Kategorija.dart';
 import 'package:hackaton/models/Objava.dart';
 import 'package:hackaton/models/Tip.dart';
+import 'package:hackaton/screens/login_screen.dart';
 import 'package:hackaton/screens/my_profile_screen.dart';
 
 import 'package:hackaton/screens/new_post_screen.dart';
+import 'package:hackaton/services/global_service.dart';
 import 'package:hackaton/services/user_service.dart';
 import 'package:hackaton/widgets/post_card.dart';
 
@@ -168,7 +170,15 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pushNamed(MyProfileScreen.routeName);
+            // check if user is logged in
+            // if yes, show profile page
+            // if no, show login page whit no back button
+            NetworkService().auth.currentUser != null
+                ? Navigator.pushNamed(context, MyProfileScreen.routeName)
+                : Navigator.pushReplacementNamed(
+                    context,
+                    LoginScreen.routeName,
+                  );
           },
           icon: Icon(Icons.person_rounded),
         ),
@@ -191,8 +201,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: TextFormField(
                 onFieldSubmitted: (newValue) {
                   setState(() {
+                    
                     kategorija = Kategorija.ALL;
-                    searchQuery = newValue;
+                    searchQuery = newValue.toLowerCase();
                   });
                 },
                 decoration: InputDecoration(
@@ -252,8 +263,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (objave[index].tip == tip &&
                         (objave[index].kategorija == kategorija ||
                             kategorija == Kategorija.ALL) &&
-                        (objave[index].naslov.contains(searchQuery) ||
-                            objave[index].tekst.contains(searchQuery)))
+                        (objave[index].naslov.toLowerCase().contains(searchQuery) ||
+                            objave[index].tekst.toLowerCase().contains(searchQuery)))
                       return Container(
                         margin: EdgeInsets.only(top: 20),
                         child: PostCard(objave[index]),
