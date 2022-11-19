@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hackaton/data/categories.dart';
 import 'package:hackaton/models/Kategorija.dart';
 import 'package:hackaton/models/Tip.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 import 'home_screen.dart';
 
@@ -13,6 +15,63 @@ class NewPostScreen extends StatefulWidget {
 }
 
 class _NewPostScreenState extends State<NewPostScreen> {
+  XFile? image;
+
+  final ImagePicker picker = ImagePicker();
+
+  Future getImage(ImageSource media) async {
+    var img = await picker.pickImage(source: media);
+
+    setState(() {
+      image = img;
+    });
+  }
+
+  void myAlert() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            title: Text('Izaberite izvor slike'),
+            content: Container(
+              height: MediaQuery.of(context).size.height / 6,
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    //if user click this button, user can upload image from gallery
+                    onPressed: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.gallery);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.image),
+                        Text('Galerija'),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    //if user click this button. user can upload image from camera
+                    onPressed: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.camera);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.camera),
+                        Text('Kamera'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   Tip tip = Tip.TRAZI;
 
   Kategorija kategorija = Kategorija.ALL;
@@ -121,11 +180,14 @@ class _NewPostScreenState extends State<NewPostScreen> {
                       Expanded(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text('Dodaj sliku'),
-                            Text('Maksimalna velicina 5MB'),
+                          children: [
+                            const Text('Dodaj sliku'),
+                            const Text('Maksimalna velicina 5MB'),
                             ElevatedButton(
-                                onPressed: null, child: const Text('Dodaj'))
+                                onPressed: () {
+                                  myAlert();
+                                },
+                                child: const Text('Dodaj'))
                           ],
                         ),
                       ),
