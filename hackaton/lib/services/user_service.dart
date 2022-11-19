@@ -84,11 +84,6 @@ class UserService extends NetworkService implements IKorisnik {
     return fetchedUser;
   }
 
-  @override
-  bool updateKorisnik(String id) {
-    // TODO: implement updateKorisnik
-    throw UnimplementedError();
-  }
 
   @override
   Future<bool> loginKorisnik(String email, String password) async {

@@ -8,5 +8,4 @@ abstract class IKorisnik {
   Future<Korisnik> getKorisnik(String id);
   Future<bool> addKorisnik(String ime, String prezime, String email,
       String lozinka, File? slika, String univerzitet, String brTelefona);
-  bool updateKorisnik(String id);
 }
