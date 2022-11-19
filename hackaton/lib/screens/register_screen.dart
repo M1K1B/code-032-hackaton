@@ -3,6 +3,7 @@ import 'package:hackaton/screens/home_screen.dart';
 import 'package:hackaton/screens/my_profile_screen.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:hackaton/services/user_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = '/register-page';
@@ -87,10 +88,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         phone.isEmpty) {
       return;
     }
-    print(
-        "Name - $name \nSurname - $surname \nEmail - $email \nPassword - $password \nUniversity - $university \nPhone - $phone");
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+    UserService()
+        .addKorisnik(name, surname, email, password, null, university, phone);
   }
 
   // Controlers
