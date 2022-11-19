@@ -17,8 +17,7 @@ class PostService extends NetworkService implements IObjava {
       String datum,
       String kreatorId,
       Kategorija kategorija,
-      String univerzitet,
-      bool reklama) 
+      String univerzitet) 
   async {
     try {
       final post = firestore.collection("objave").doc();
@@ -36,7 +35,6 @@ class PostService extends NetworkService implements IObjava {
           'kreatorId': kreatorId,
           'kategorija': kategorija.index,
           'univerzitet': univerzitet,
-          'reklama': reklama,
         },
       );
     } catch (e) {

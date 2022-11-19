@@ -55,7 +55,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
   final _tekstController = TextEditingController();
 
 
-  Future<void> _newPost(String naslov, tekst, tip, kategorij, bool reklama) async {
+  Future<void> _newPost(String naslov, tekst, tip, kategorij) async {
     if (naslov.isEmpty || tekst.isEmpty || tip == null || kategorija == null) {
       return;
     }

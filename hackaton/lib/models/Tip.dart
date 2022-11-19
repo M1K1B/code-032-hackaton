@@ -1,1 +1,1 @@
-enum Tip { NUDI, TRAZI }
+enum Tip { NUDI, TRAZI , REKLAMA}
