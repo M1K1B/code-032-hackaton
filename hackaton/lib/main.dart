@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton/screens/home_screen.dart';
 import 'package:hackaton/screens/login_screen.dart';
+import 'package:hackaton/screens/new_post_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: NewPostScreen(),
     );
   }
 }
