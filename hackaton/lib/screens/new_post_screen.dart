@@ -6,6 +6,7 @@ import 'package:hackaton/models/Tip.dart';
 import 'home_screen.dart';
 
 class NewPostScreen extends StatefulWidget {
+  static const String routeName = '/newPost';
   const NewPostScreen({super.key});
   @override
   State<NewPostScreen> createState() => _NewPostScreenState();
@@ -17,6 +18,23 @@ class _NewPostScreenState extends State<NewPostScreen> {
   Kategorija kategorija = Kategorija.ALL;
   final kategorije = CATEGORIES;
 
+  // controllers
+  final _naslovController = TextEditingController();
+  final _tekstController = TextEditingController();
+
+  void _newPost(String naslov, tekst, tip, kategorija) {
+    if(
+      naslov.isEmpty ||
+      tekst.isEmpty ||
+      tip == null ||
+      kategorija == null
+    ) {
+      return;
+    }
+    print("$naslov - naslov\n$tekst - tekst\n$tip - tip\n$kategorija - kategorija");
+    Navigator.push(
+        context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+  }
   void _changeTip() {
     setState(() {
       tip = tip == Tip.TRAZI ? Tip.NUDI : Tip.TRAZI;
@@ -75,10 +93,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
                           'Nudi', Colors.blue, _changeTip, tip == Tip.NUDI)),
                 ],
               ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  decoration: InputDecoration(
+                  controller: _naslovController,
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Naslov',
                   ),
@@ -119,7 +138,6 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     scrollDirection: Axis.horizontal,
                     itemCount: kategorije.length,
                     itemBuilder: (context, index) {
-                      print(kategorije[index]);
                       return Container(
                         padding: const EdgeInsets.all(4.0),
                         child: SelectorButton(
@@ -138,25 +156,33 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: TextField(
-                  decoration: InputDecoration(
+                  controller: _tekstController,
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Opis',
                   ),
                 ),
               ),
               const Divider(color: Colors.black),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
-                  onPressed: null,
-                  child: Text('Postavi oglas'),
+                  onPressed: () {
+                    _newPost(
+                        _naslovController.text,
+                        _tekstController.text,
+                        tip,
+                        kategorija);
+                      },
+                  child: const Text('Postavi oglas'),
                 ),
               )
             ],
           ),
         ));
   }
+  
 }

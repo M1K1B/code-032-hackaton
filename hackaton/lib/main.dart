@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton/screens/home_screen.dart';
 import 'package:hackaton/screens/login_screen.dart';
+import 'package:hackaton/screens/new_post_screen.dart';
 import 'package:hackaton/screens/post_details_screen.dart';
 import 'package:hackaton/screens/register_screen.dart';
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         routes: {
           LoginScreen.routeName: (context) => const LoginScreen(),
           RegisterScreen.routeName: (context) => const RegisterScreen(),
+          NewPostScreen.routeName: (context) => const NewPostScreen(),
         });
   }
 }
