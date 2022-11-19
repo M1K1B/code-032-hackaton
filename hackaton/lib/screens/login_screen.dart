@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton/screens/home_screen.dart';
 import 'package:hackaton/screens/register_screen.dart';
+import 'package:hackaton/services/user_service.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login-page';
@@ -26,10 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (email.isEmpty || pass.isEmpty) {
       return;
     }
-    print("Email - $email \nPass - $pass");
-
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+    UserService().loginKorisnik(email, pass);
   }
 
   @override
