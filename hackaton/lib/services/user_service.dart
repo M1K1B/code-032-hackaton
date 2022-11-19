@@ -48,7 +48,8 @@ class UserService extends NetworkService implements IKorisnik {
             'ime': ime,
             'prezime': prezime,
             'email': email,
-            'slika': null,
+            'slika':
+                'https://firebasestorage.googleapis.com/v0/b/bbcf-hemikalije.appspot.com/o/korisnicke_slike%2Fdefault_user.png?alt=media&token=c2a0bf85-fc6b-42b0-9da4-e10e9e8b25a6',
             'univerzitet': univerzitet,
             'brTelefona': brTelefona
           },

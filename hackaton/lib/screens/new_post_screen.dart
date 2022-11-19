@@ -8,6 +8,7 @@ import 'package:hackaton/services/posts_service.dart';
 import 'package:hackaton/services/user_service.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import 'home_screen.dart';
 
@@ -61,8 +62,15 @@ class _NewPostScreenState extends State<NewPostScreen> {
     final user =
         await UserService().getKorisnik(NetworkService().auth.currentUser!.uid);
 
-    PostService().addObjava(tip, naslov, tekst, File(image!.path),
-        DateTime.now(), user.id, kategorija, user.univerzitet, reklama);
+    PostService().addObjava(
+        tip,
+        naslov,
+        tekst,
+        File(image!.path),
+        DateFormat("dd/MM/yyyy").format(DateTime.now()).toString(),
+        user.id,
+        kategorija,
+        user.univerzitet);
 
     Navigator.push(
         context, MaterialPageRoute(builder: (_) => const HomeScreen()));
@@ -239,11 +247,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    if(_checkFields(_naslovController.text, _tekstController.text)){
-                      _newPost(_naslovController.text, _tekstController.text, tip,
-                          kategorija, reklama);
+                    if (_checkFields(
+                        _naslovController.text, _tekstController.text)) {
+                      _newPost(_naslovController.text, _tekstController.text,
+                          tip, kategorija);
                     }
-
                   },
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all(
@@ -267,7 +275,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
       ),
     );
   }
-  
+
   bool _checkFields(String naslov, String tekst) {
     if (naslov.isEmpty || tekst.isEmpty) {
       return false;
