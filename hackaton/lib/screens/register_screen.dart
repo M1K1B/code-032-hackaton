@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton/screens/home_screen.dart';
 import 'package:hackaton/screens/my_profile_screen.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = '/register-page';
@@ -18,6 +20,63 @@ class _RegisterScreenState extends State<RegisterScreen> {
     'Univerzitet u Kragujevcu',
     'Univerzitet u Čačku'
   ];
+
+  XFile? image;
+
+  final ImagePicker picker = ImagePicker();
+
+  Future getImage(ImageSource media) async {
+    var img = await picker.pickImage(source: media);
+
+    setState(() {
+      image = img;
+    });
+  }
+
+  void myAlert() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            title: Text('Izaberite izvor slike'),
+            content: Container(
+              height: MediaQuery.of(context).size.height / 6,
+              child: Column(
+                children: [
+                  ElevatedButton(
+                    //if user click this button, user can upload image from gallery
+                    onPressed: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.gallery);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.image),
+                        Text('Galerija'),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    //if user click this button. user can upload image from camera
+                    onPressed: () {
+                      Navigator.pop(context);
+                      getImage(ImageSource.camera);
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.camera),
+                        Text('Kamera'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
   void _register(String name, surname, email, password, university, phone) {
     if (name.isEmpty ||
@@ -69,6 +128,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             fontSize: 50,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
+                          ),
+                        ),
+                        CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Colors.blue,
+                          child: ClipOval(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SizedBox(
+                                  width: 80,
+                                  height: 80,
+                                  child: (image != null)
+                                      ? Image.file(
+                                          File(image!.path),
+                                          fit: BoxFit.fill,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/default_user.png',
+                                          fit: BoxFit.fill,
+                                        ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 0, top: 5),
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.camera_alt,
+                                      size: 30,
+                                    ),
+                                    onPressed: () {
+                                      myAlert();
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Padding(

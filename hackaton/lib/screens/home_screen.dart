@@ -161,7 +161,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: SizedBox(
           width: 70,
           child: Image.asset('assets/logo.png'),
+          
         ),
+        centerTitle: true,
         leading: IconButton(
           onPressed: () {},
           icon: Icon(Icons.person_rounded),

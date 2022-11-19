@@ -171,8 +171,10 @@ class _NewPostScreenState extends State<NewPostScreen> {
                           border: Border.all(color: Colors.blue),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Image.network(
-                            "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png"),
+                        child: image == null ? Image.network(
+                            "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/640px-Image_created_with_a_mobile_phone.png")
+                            :
+                            Image.file(File(image!.path)), 
                       ),
                       const SizedBox(
                         width: 8,
