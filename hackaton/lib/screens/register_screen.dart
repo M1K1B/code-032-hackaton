@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton/screens/home_screen.dart';
+import 'package:hackaton/screens/my_profile_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = '/register-page';
