@@ -3,11 +3,11 @@ import './Tip.dart';
 
 class Objava {
   final String id;
-  final Tip tip;  
+  final Tip tip;
   final String naslov;
   final String tekst;
   final String slika;
-  final DateTime datum;
+  final String datum;
   final String kreatorId;
   final Kategorija kategorija;
   final String univerzitet;
