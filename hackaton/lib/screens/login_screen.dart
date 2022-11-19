@@ -13,6 +13,8 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+
+
 class _LoginScreenState extends State<LoginScreen> {
   final _emailContr = TextEditingController();
   final _passContr = TextEditingController();
@@ -28,12 +30,24 @@ class _LoginScreenState extends State<LoginScreen> {
     if (email.isEmpty || pass.isEmpty) {
       return;
     }
-    UserService().loginKorisnik(email, pass);
+    UserService().loginKorisnik(email, pass).then((value) {
+      if (value) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Pogrešan email ili lozinka!'),
+          ),
+        );
+      }
+    });
+    
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(      
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
