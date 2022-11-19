@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:intl/intl.dart';
 
 import 'package:hackaton/interface/IObjava.dart';
 import 'package:hackaton/models/Kategorija.dart';
@@ -13,15 +14,13 @@ class PostService extends NetworkService implements IObjava {
       String naslov,
       String tekst,
       File slika,
-      DateTime datum,
+      String datum,
       String kreatorId,
       Kategorija kategorija,
       String univerzitet) async {
     try {
-      print("1");
       final post = firestore.collection("objave").doc();
       final ref = storage.ref().child('slike_objava').child(post.id + '.jpg');
-      print("2");
       await ref.putFile(slika).whenComplete(() => null);
       final url = await ref.getDownloadURL();
       await firestore.collection("objave").doc(post.id).set(
@@ -37,17 +36,15 @@ class PostService extends NetworkService implements IObjava {
           'univerzitet': univerzitet
         },
       );
-      print("3");
     } catch (e) {
       print(e);
-      print("4");
       return false;
     }
     return true;
   }
 
   @override
-  bool deleteObjava(String id)  {
+  bool deleteObjava(String id) {
     final data = firestore.collection("objave").doc(id);
     try {
       data.delete();
@@ -98,7 +95,7 @@ class PostService extends NetworkService implements IObjava {
           naslov: element.data()['naslov'],
           tekst: element.data()['tekst'],
           slika: element.data()['slika'],
-          datum: element.data()['datum'].toDate(),
+          datum: element.data()['datum'],
           kreatorId: element.data()['kreatorId'],
           kategorija: Kategorija.values[element.data()['kategorija']],
           univerzitet: element.data()['univerzitet']));
