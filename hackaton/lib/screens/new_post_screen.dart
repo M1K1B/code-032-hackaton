@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hackaton/data/categories.dart';
 import 'package:hackaton/models/Kategorija.dart';
+import 'package:hackaton/models/Korisnik.dart';
 import 'package:hackaton/models/Tip.dart';
+import 'package:hackaton/services/global_service.dart';
+import 'package:hackaton/services/posts_service.dart';
+import 'package:hackaton/services/user_service.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
@@ -36,12 +40,21 @@ class _NewPostScreenState extends State<NewPostScreen> {
   final _naslovController = TextEditingController();
   final _tekstController = TextEditingController();
 
-  void _newPost(String naslov, tekst, tip, kategorija) {
-    if (naslov.isEmpty || tekst.isEmpty || tip == null || kategorija == null) {
+  Future<void> _newPost(String naslov, tekst, tip, kategorija) async {
+    if(
+      naslov.isEmpty ||
+      tekst.isEmpty ||
+      tip == null ||
+      kategorija == null
+    ) {
       return;
     }
-    print(
-        "$naslov - naslov\n$tekst - tekst\n$tip - tip\n$kategorija - kategorija");
+    final user = await UserService().getKorisnik(
+      NetworkService().auth.currentUser!.uid
+      );
+
+    PostService().addObjava(tip, naslov, tekst, File(image!.path), DateTime.now(), user.id, kategorija, user.univerzitet);
+
     Navigator.push(
         context, MaterialPageRoute(builder: (_) => const HomeScreen()));
   }

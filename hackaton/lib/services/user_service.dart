@@ -17,6 +17,7 @@ class UserService extends NetworkService implements IKorisnik {
       String brTelefona) async {
     final authResult = await auth.createUserWithEmailAndPassword(
         email: email, password: lozinka);
+
     if (slika != null) {
       try {
         final ref = storage

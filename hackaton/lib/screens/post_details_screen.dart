@@ -92,7 +92,7 @@ class PostDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(kreator.slika),
+                    backgroundImage: kreator.slika != null ?  NetworkImage(kreator.slika !) : const NetworkImage("https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"),
                     radius: 35,
                   ),
                   SizedBox(
