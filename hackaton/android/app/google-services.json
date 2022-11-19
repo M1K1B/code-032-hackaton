@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1025063117787",
+    "project_id": "studenti-studentima",
+    "storage_bucket": "studenti-studentima.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025063117787:android:0f86a6b6192756c39a3dfe",
+        "android_client_info": {
+          "package_name": "com.example.hackaton"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1025063117787-6ksdshbofqscub12jls59l4mub63h6n9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2ZdcG19b8T94ce4daMbSNwnYC0SD7eT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1025063117787-6ksdshbofqscub12jls59l4mub63h6n9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

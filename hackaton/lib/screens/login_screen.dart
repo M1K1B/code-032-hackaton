@@ -3,6 +3,8 @@ import 'package:hackaton/screens/home_screen.dart';
 import 'package:hackaton/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const String routeName = '/login-page';
+
   const LoginScreen({super.key});
 
   @override
@@ -10,6 +12,26 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _emailContr = TextEditingController();
+  final _passContr = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailContr.dispose();
+    _passContr.dispose();
+    super.dispose();
+  }
+
+  void _login(String email, pass) {
+    if (email.isEmpty || pass.isEmpty) {
+      return;
+    }
+    print("Email - $email \nPass - $pass");
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  
                   Container(
                     width: MediaQuery.of(context).size.width * 0.9,
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -34,28 +55,31 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         const Text(
                           'Prijava',
-                        
                           style: TextStyle(
                             fontSize: 50,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 15, left: 15, top: 16),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 15, left: 15, top: 16),
                           child: TextField(
-                            decoration: InputDecoration(
+                            controller: _emailContr,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Email',
                                 hintText: 'Unesite vašu email adresu'),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(
+                        Padding(
+                          padding: const EdgeInsets.only(
                               left: 15.0, right: 15.0, top: 8, bottom: 0),
                           child: TextField(
+                            controller: _passContr,
                             obscureText: true,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Password',
                                 hintText: 'Unesite vašu lozinku'),
@@ -71,20 +95,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              const RegisterScreen()));
+                                  Navigator.of(context)
+                                      .pushNamed(RegisterScreen.routeName);
                                 },
                                 style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: const BorderSide(color: Colors.white)
-                                    )
-                                  )
-                                ),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: const BorderSide(
+                                                color: Colors.white)))),
                                 child: const Text(
                                   'Registruj se',
                                   style: TextStyle(
@@ -96,10 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => const HomeScreen()));
+                                  _login(_emailContr.text, _passContr.text);
                                 },
                                 style: ButtonStyle(
                                     shape: MaterialStateProperty.all<

@@ -1,1 +1,1 @@
-enum Kategorija { UCENJE, SMESTAJ, PRODAJA, ZABAVA }
+enum Kategorija { ALL, UCENJE, SMESTAJ, PRODAJA, ZABAVA }

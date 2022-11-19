@@ -3,6 +3,8 @@ import 'package:hackaton/screens/home_screen.dart';
 import 'package:hackaton/screens/my_profile_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
+  static const String routeName = '/register-page';
+
   const RegisterScreen({super.key});
 
   @override
@@ -16,6 +18,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
     'Univerzitet u Kragujevcu',
     'Univerzitet u Čačku'
   ];
+
+  void _register(String name, surname, email, password, university, phone) {
+    if (name.isEmpty ||
+        surname.isEmpty ||
+        email.isEmpty ||
+        password.isEmpty ||
+        university.isEmpty ||
+        phone.isEmpty) {
+      return;
+    }
+    print(
+        "Name - $name \nSurname - $surname \nEmail - $email \nPassword - $password \nUniversity - $university \nPhone - $phone");
+    Navigator.push(
+        context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+  }
+
+  // Controlers
+  final _emailController = TextEditingController();
+  final _passController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _surnameController = TextEditingController();
+  final _phoneController = TextEditingController();
+
   var dropdownValue = 'Univerzitet u Novom Sadu';
   @override
   Widget build(BuildContext context) {
@@ -46,22 +71,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             color: Colors.blue,
                           ),
                         ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.only(right: 15, left: 15, top: 16),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 15, left: 15, top: 16),
                           child: TextField(
-                            decoration: InputDecoration(
+                            controller: _nameController,
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Ime',
                                 hintText: 'Unesite vaše ime'),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(
+                        Padding(
+                          padding: const EdgeInsets.only(
                               left: 15.0, right: 15.0, top: 8, bottom: 0),
                           child: TextField(
-                            obscureText: true,
-                            decoration: InputDecoration(
+                            controller: _surnameController,
+                            obscureText: false,
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Prezime',
                                 hintText: 'Unesite vaše prezime'),
@@ -74,9 +101,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               borderRadius: BorderRadius.circular(32),
                               style: const TextStyle(
                                 color: Colors.black,
-
                               ),
-                              icon: const  Icon(Icons.arrow_drop_down),
+                              icon: const Icon(Icons.arrow_drop_down),
                               value: dropdownValue,
                               items: items.map((String items) {
                                 return DropdownMenuItem(
@@ -91,37 +117,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 });
                               }),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(
+                        Padding(
+                          padding: const EdgeInsets.only(
                               left: 15.0, right: 15.0, top: 8, bottom: 0),
                           child: TextField(
-                            obscureText: true,
+                            controller: _emailController,
+                            obscureText: false,
                             keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Email',
                                 hintText: 'Unesite vaš email'),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(
+                        Padding(
+                          padding: const EdgeInsets.only(
                               left: 15.0, right: 15.0, top: 8, bottom: 0),
                           child: TextField(
+                            controller: _passController,
                             obscureText: true,
-
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Lozinka',
                                 hintText: 'Unesite vašu lozinku'),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(
+                        Padding(
+                          padding: const EdgeInsets.only(
                               left: 15.0, right: 15.0, top: 8, bottom: 0),
                           child: TextField(
+                            controller: _phoneController,
                             keyboardType: TextInputType.phone,
-                            obscureText: true,
-                            decoration: InputDecoration(
+                            obscureText: false,
+                            decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Telefon',
                                 hintText: 'Unesite vaš broj telefona'),
@@ -137,11 +165,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             children: [
                               ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              MyProfileScreen()));
+                                  _register(
+                                      _nameController.text,
+                                      _surnameController.text,
+                                      _emailController.text,
+                                      _passController.text,
+                                      dropdownValue,
+                                      _phoneController.text);
                                 },
                                 style: ButtonStyle(
                                     shape: MaterialStateProperty.all<
