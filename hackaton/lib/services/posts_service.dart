@@ -20,10 +20,7 @@ class PostService extends NetworkService implements IObjava {
     try {
       print("1");
       final post = firestore.collection("objave").doc();
-      final ref = storage
-          .ref()
-          .child('slike_objava')
-          .child(post.id + '.jpg');
+      final ref = storage.ref().child('slike_objava').child(post.id + '.jpg');
       print("2");
       await ref.putFile(slika).whenComplete(() => null);
       final url = await ref.getDownloadURL();
@@ -50,14 +47,63 @@ class PostService extends NetworkService implements IObjava {
   }
 
   @override
-  bool deleteObjava(String id) {
-    // TODO: implement deleteObjava
-    throw UnimplementedError();
+  bool deleteObjava(String id)  {
+    final data = firestore.collection("objave").doc(id);
+    try {
+      data.delete();
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
   }
 
   @override
-  Objava getObjava(String id) {
-    // TODO: implement getObjava
-    throw UnimplementedError();
+  Future<Objava> getObjava(String id) async {
+    Objava objava;
+
+    final data = await firestore
+        .collection("objave")
+        .doc(id)
+        .get()
+        .then((value) => value.data());
+
+    objava = Objava(
+        id: id,
+        tip: Tip.values[data!['tip']],
+        naslov: data['naslov'],
+        tekst: data['tekst'],
+        slika: data['slika'],
+        datum: data['datum'].toDate(),
+        kreatorId: data['kreatorId'],
+        kategorija: Kategorija.values[data['kategorija']],
+        univerzitet: data['univerzitet']);
+
+    return objava;
+  }
+
+  Future<List<Objava>> getObjaveByUniversity(String uni) async {
+    List<Objava> objave = [];
+
+    final data = await firestore
+        .collection("objave")
+        .where("univerzitet", isEqualTo: uni)
+        .get()
+        .then((value) => value.docs);
+
+    data.forEach((element) {
+      objave.add(Objava(
+          id: element.data()['id'],
+          tip: Tip.values[element.data()['tip']],
+          naslov: element.data()['naslov'],
+          tekst: element.data()['tekst'],
+          slika: element.data()['slika'],
+          datum: element.data()['datum'].toDate(),
+          kreatorId: element.data()['kreatorId'],
+          kategorija: Kategorija.values[element.data()['kategorija']],
+          univerzitet: element.data()['univerzitet']));
+    });
+
+    return objave;
   }
 }

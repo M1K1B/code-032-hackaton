@@ -179,7 +179,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     borderRadius: BorderRadius.circular(15),
                                     style: TextStyle(
                                         color: Colors.grey[700], fontSize: 16),
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(15)),
@@ -268,18 +268,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
-                                      _register(
+                                      if(_checkFields(
                                           _nameController.text,
                                           _surnameController.text,
                                           _emailController.text,
                                           _passController.text,
                                           dropdownValue,
-                                          _phoneController.text,
-                                          image);
+                                          _phoneController.text
+                                          )){
+                                            _register(
+                                                _nameController.text,
+                                                _surnameController.text,
+                                                _emailController.text,
+                                                _passController.text,
+                                                dropdownValue,
+                                                _phoneController.text,
+                                                image);
+                                          }
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all(
-                                          EdgeInsets.symmetric(
+                                          const EdgeInsets.symmetric(
                                               horizontal: 30, vertical: 15)),
                                       shape: MaterialStateProperty.all<
                                           RoundedRectangleBorder>(
@@ -305,7 +314,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             .pushReplacementNamed(
                                                 '/login-page');
                                       },
-                                      child: Text(
+                                      child: const Text(
                                         "Imate nalog? Prijavite se",
                                         style: TextStyle(
                                             fontSize: 16,
@@ -328,5 +337,63 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ]),
     );
+  }
+  
+  bool _checkFields(String name, String surname, String email, String pass, String uni, String phone) {
+    if (name.isEmpty || surname.isEmpty || email.isEmpty || pass.isEmpty || uni.isEmpty || phone.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Morate popuniti sva polja'),
+        ),
+      );
+      return false;
+    }
+
+    // check if email is valid using regex
+    if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email nije validan'),
+        ),
+      );
+      return false;
+    }
+
+    // check if password is valid using regex
+    if (!RegExp(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$")
+        .hasMatch(pass)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              'Lozinka mora imati najmanje 8 karaktera, jedno veliko slovo i jedan broj'),
+        ),
+      );
+      return false;
+    }
+
+    // check if phone number is valid using regex
+    if (!RegExp(r"^(06)[0-9]{7,8}$").hasMatch(phone)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Broj telefona nije validan'),
+        ),
+      );
+      return false;
+    }
+
+    // check if name and surname are valid using regex
+    if (!RegExp(r"^[a-zA-Z]+$").hasMatch(name) ||
+        !RegExp(r"^[a-zA-Z]+$").hasMatch(surname)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Ime i prezime moraju sadržati samo slova'),
+        ),
+      );
+      return false;
+    }
+
+
+    return true;
+
   }
 }

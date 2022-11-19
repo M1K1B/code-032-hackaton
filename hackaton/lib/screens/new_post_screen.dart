@@ -25,10 +25,21 @@ class _NewPostScreenState extends State<NewPostScreen> {
 
   Future getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
-
-    setState(() {
-      image = img;
-    });
+    // check if image is grater than 1MB
+    if (img != null) {
+      File file = File(img.path);
+      if (file.lengthSync() > 1000000) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Slika je prevelika!'),
+          ),
+        );
+      } else {
+        setState(() {
+          image = img;
+        });
+      }
+    }
   }
 
   Tip tip = Tip.TRAZI;
@@ -41,19 +52,14 @@ class _NewPostScreenState extends State<NewPostScreen> {
   final _tekstController = TextEditingController();
 
   Future<void> _newPost(String naslov, tekst, tip, kategorija) async {
-    if(
-      naslov.isEmpty ||
-      tekst.isEmpty ||
-      tip == null ||
-      kategorija == null
-    ) {
+    if (naslov.isEmpty || tekst.isEmpty || tip == null || kategorija == null) {
       return;
     }
-    final user = await UserService().getKorisnik(
-      NetworkService().auth.currentUser!.uid
-      );
+    final user =
+        await UserService().getKorisnik(NetworkService().auth.currentUser!.uid);
 
-    PostService().addObjava(tip, naslov, tekst, File(image!.path), DateTime.now(), user.id, kategorija, user.univerzitet);
+    PostService().addObjava(tip, naslov, tekst, File(image!.path),
+        DateTime.now(), user.id, kategorija, user.univerzitet);
 
     Navigator.push(
         context, MaterialPageRoute(builder: (_) => const HomeScreen()));
@@ -230,8 +236,11 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    _newPost(_naslovController.text, _tekstController.text, tip,
-                        kategorija);
+                    if(_checkFields(_naslovController.text, _tekstController.text)){
+                      _newPost(_naslovController.text, _tekstController.text, tip,
+                          kategorija);
+                    }
+
                   },
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all(
@@ -254,5 +263,17 @@ class _NewPostScreenState extends State<NewPostScreen> {
         ),
       ),
     );
+  }
+  
+  bool _checkFields(String naslov, String tekst) {
+    if (naslov.isEmpty || tekst.isEmpty) {
+      return false;
+    }
+    // naslov must have at least 3 characters and tekst must have at least 10 characters
+    if (naslov.length < 3 || tekst.length < 10) {
+      return false;
+    }
+
+    return true;
   }
 }

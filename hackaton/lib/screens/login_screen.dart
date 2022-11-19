@@ -165,7 +165,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   ElevatedButton(
                                     onPressed: () {
-                                      _login(_emailContr.text, _passContr.text);
+                                      if (_checkFields(
+                                          _emailContr.text, _passContr.text)) {
+                                        _login(
+                                            _emailContr.text, _passContr.text);
+                                      }
                                     },
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all(
@@ -212,5 +216,32 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ]),
     );
+  }
+
+  bool _checkFields(String email, String pass) {
+    if (email.isEmpty || pass.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Morate popuniti sva polja!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return false;
+    }
+    // check if email is valid using regex
+    if (!RegExp(
+            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+        .hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email adresa nije validna!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return false;
+    }
+
+    return true;
+
   }
 }
