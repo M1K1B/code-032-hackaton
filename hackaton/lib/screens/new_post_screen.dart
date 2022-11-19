@@ -45,6 +45,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
 
   Tip tip = Tip.TRAZI;
 
+  bool reklama = false;
+
   Kategorija kategorija = Kategorija.UCENJE;
   final kategorije = CATEGORIES;
 
@@ -52,7 +54,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
   final _naslovController = TextEditingController();
   final _tekstController = TextEditingController();
 
-  Future<void> _newPost(String naslov, tekst, tip, kategorija) async {
+
+  Future<void> _newPost(String naslov, tekst, tip, kategorij, bool reklama) async {
     if (naslov.isEmpty || tekst.isEmpty || tip == null || kategorija == null) {
       return;
     }

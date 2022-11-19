@@ -11,6 +11,7 @@ class Objava {
   final String kreatorId;
   final Kategorija kategorija;
   final String univerzitet;
+  final bool reklama;
 
   Objava({
     required this.id,
@@ -22,5 +23,6 @@ class Objava {
     required this.kreatorId,
     required this.kategorija,
     required this.univerzitet,
+    this.reklama = false,
   });
 }

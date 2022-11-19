@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hackaton/models/Korisnik.dart';
 import 'package:hackaton/screens/home_screen.dart';
+import 'package:hackaton/screens/login_screen.dart';
 import 'package:hackaton/services/global_service.dart';
 import 'package:hackaton/services/user_service.dart';
 
@@ -31,8 +32,17 @@ class MyProfileScreen extends StatelessWidget {
               backgroundColor: Colors.transparent,
               actions: [
                 IconButton(
-                  onPressed: () {
-                    UserService().logoutKorisnik();
+                  onPressed: () async {
+                    bool isLoggedOut = await UserService().logoutKorisnik();
+                    if(isLoggedOut){
+                      Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                    }else{
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error while logging out'),
+                        ),
+                      );
+                    }
                   },
                   icon: Icon(Icons.logout),
                 ),

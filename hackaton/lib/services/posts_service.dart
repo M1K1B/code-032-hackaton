@@ -17,7 +17,9 @@ class PostService extends NetworkService implements IObjava {
       String datum,
       String kreatorId,
       Kategorija kategorija,
-      String univerzitet) async {
+      String univerzitet,
+      bool reklama) 
+  async {
     try {
       final post = firestore.collection("objave").doc();
       final ref = storage.ref().child('slike_objava').child(post.id + '.jpg');
@@ -33,7 +35,8 @@ class PostService extends NetworkService implements IObjava {
           'datum': datum,
           'kreatorId': kreatorId,
           'kategorija': kategorija.index,
-          'univerzitet': univerzitet
+          'univerzitet': univerzitet,
+          'reklama': reklama,
         },
       );
     } catch (e) {
@@ -74,7 +77,8 @@ class PostService extends NetworkService implements IObjava {
         datum: data['datum'].toDate(),
         kreatorId: data['kreatorId'],
         kategorija: Kategorija.values[data['kategorija']],
-        univerzitet: data['univerzitet']);
+        univerzitet: data['univerzitet'],
+        reklama: data['reklama']);
 
     return objava;
   }
@@ -98,7 +102,35 @@ class PostService extends NetworkService implements IObjava {
           datum: element.data()['datum'],
           kreatorId: element.data()['kreatorId'],
           kategorija: Kategorija.values[element.data()['kategorija']],
-          univerzitet: element.data()['univerzitet']));
+          univerzitet: element.data()['univerzitet'],
+          reklama: element.data()['reklama']));
+    });
+
+    return objave;
+  }
+
+  // get all posts that are reklama
+  Future<List<Objava>> getReklame() async {
+    List<Objava> objave = [];
+
+    final data = await firestore
+        .collection("objave")
+        .where("reklama", isEqualTo: true)
+        .get()
+        .then((value) => value.docs);
+
+    data.forEach((element) {
+      objave.add(Objava(
+          id: element.data()['id'],
+          tip: Tip.values[element.data()['tip']],
+          naslov: element.data()['naslov'],
+          tekst: element.data()['tekst'],
+          slika: element.data()['slika'],
+          datum: element.data()['datum'].toDate(),
+          kreatorId: element.data()['kreatorId'],
+          kategorija: Kategorija.values[element.data()['kategorija']],
+          univerzitet: element.data()['univerzitet'],
+          reklama: element.data()['reklama']));
     });
 
     return objave;
