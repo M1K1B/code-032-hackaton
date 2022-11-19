@@ -164,13 +164,10 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {},
           icon: Icon(Icons.person_rounded),
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                UserService().logoutKorisnik();
-              },
-              icon: Icon(Icons.add))
-        ],
+        actions: [IconButton(onPressed: () {
+          Navigator.pushNamed(context, '/novaObjava');
+          
+        }, icon: Icon(Icons.add))],
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
